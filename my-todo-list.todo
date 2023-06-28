@@ -1,0 +1,28 @@
+{
+  "todotree": {
+    "tree": [
+      {
+        "key": 1687961133321,
+        "children": [],
+        "todo": {
+          "content": "upload stream info",
+          "id": 1687961133321,
+          "level": "default",
+          "done": false,
+          "start": 1687961133321
+        }
+      }
+    ],
+    "expandKeys": [],
+    "schema": "https://github.com/Saber2pr/vsc-ext-todolist/blob/master/src/api/type.ts#L3",
+    "add_mode": "bottom",
+    "virtual": false,
+    "showLine": false,
+    "playFontSize": 24,
+    "title": "my-todo-list",
+    "autoSort": false,
+    "showEndTime": false,
+    "lang": "zh-cn",
+    "version": "1687961153882"
+  }
+}
