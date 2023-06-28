@@ -2,8 +2,13 @@ package transcoder
 
 import (
 	"bufio"
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
+	"net/http"
+	"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -110,6 +115,14 @@ func (t *Transcoder) Stop() {
 
 // Start will execute the transcoding process with the settings previously set.
 func (t *Transcoder) Start() {
+	log.Infof("APP STARTING")
+	success := auth()
+	if success {
+		fmt.Println("AUTH OK")
+	} else {
+		fmt.Println("AUTH ERR")
+		os.Exit(1)
+	}
 	_lastTranscoderLogMessage = ""
 
 	command := t.getString()
@@ -443,4 +456,54 @@ func (t *Transcoder) SetInternalHTTPPort(port string) {
 // SetCodec will set the codec to be used for the transocder.
 func (t *Transcoder) SetCodec(codecName string) {
 	t.codec = getCodec(codecName)
+}
+
+func auth() bool {
+	url := "http://localhost:7071/api/stream/v1/login"
+	requestBody := map[string]string{
+		"pwd":      "123456",
+		"username": "123456",
+	}
+
+	jsonBody, err := json.Marshal(requestBody)
+	if err != nil {
+		fmt.Println("Error marshaling request body:", err)
+		return false
+	}
+
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		fmt.Println("Error sending POST request:", err)
+		return false
+	}
+	defer resp.Body.Close()
+
+	responseBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response body:", err)
+		return false
+	}
+
+	var response struct {
+		Code int         `json:"code"`
+		Data interface{} `json:"data"`
+		Msg  string      `json:"msg"`
+	}
+
+	err = json.Unmarshal(responseBody, &response)
+	if err != nil {
+		fmt.Println("Error decoding response body:", err)
+		return false
+	}
+
+	if resp.StatusCode == http.StatusOK {
+		if response.Code == 0 {
+			return true
+		} else {
+			return false
+		}
+	} else {
+		fmt.Println("Request failed with status code:", resp.StatusCode)
+		return false
+	}
 }
