@@ -61,13 +61,16 @@ require (
 require github.com/SherClockHolmes/webpush-go v1.2.0
 
 require (
+	github.com/ClickHouse/clickhouse-go v1.5.4 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
+	github.com/cloudflare/golz4 v0.0.0-20150217214814-ef862a3cdc58 // indirect
 	github.com/go-test/deep v1.0.4 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/oschwald/maxminddb-golang v1.10.0 // indirect
+	github.com/roistat/go-clickhouse v1.0.1 // indirect
 	github.com/shoenig/go-m1cpu v0.1.4 // indirect
 )
 

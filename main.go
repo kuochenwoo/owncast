@@ -2,8 +2,10 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/owncast/owncast/logging"
 	log "github.com/sirupsen/logrus"
@@ -104,6 +106,15 @@ func main() {
 	}
 
 	go metrics.Start(core.GetStatus)
+
+	// insert the streaming info into DB every 10 min
+	ticker := time.NewTicker(10 * time.Minute)
+	go func() {
+		for range ticker.C {
+			fmt.Println("DB inserted")
+			core.DbInsert()
+		}
+	}()
 
 	if err := router.Start(); err != nil {
 		log.Fatalln("failed to start/run the router", err)

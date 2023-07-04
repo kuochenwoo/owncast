@@ -498,6 +498,34 @@ func auth() bool {
 
 	if resp.StatusCode == http.StatusOK {
 		if response.Code == 0 {
+			fmt.Println("OK")
+
+			// Type assertion to map[string]interface{}
+			data, ok := response.Data.(map[string]interface{})
+			if !ok {
+				fmt.Println("Invalid data format in the response.")
+				return false
+			}
+			fmt.Println(data)
+			if address, ok := data["address"].(string); ok && address != "" {
+				config.GlobalAddress = address
+			}
+			if age, ok := data["age"].(float64); ok {
+				config.GlobalAge = int(age)
+			}
+			if id, ok := data["id"].(float64); ok {
+				config.GlobalId = int(id)
+			}
+			if username, ok := data["username"].(string); ok && username != "" {
+				config.GlobalUsername = username
+			}
+			if streamAddress, ok := data["streamAddress"].(string); ok && streamAddress != "" {
+				config.GlobalStreamAddress = streamAddress
+			}
+			if gender, ok := data["gender"].(string); ok && gender != "" {
+				config.GlobalGender = gender
+			}
+
 			return true
 		} else {
 			return false
